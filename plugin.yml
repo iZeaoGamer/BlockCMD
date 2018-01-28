@@ -15,11 +15,11 @@ commands:
 permissions:
  blockcmd:
   description: Allows access to all BlockCMD features.
-  default: false
+  default: op
   children:
    blockcmd.access:
     description: Allows access to use all blocked commands.
-    default: false
+    default: op
    blockcmd.command:
     description: Allows access to all BlockCMD commands.
     default: op
