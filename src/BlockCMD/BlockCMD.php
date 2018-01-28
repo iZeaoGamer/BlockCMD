@@ -40,7 +40,7 @@ class BlockCMD extends PluginBase implements Listener{
     }
     $this->commands = new Config($this->getDataFolder()."commands.yml", Config::YAML);
     foreach($this->commands->getAll() as $command => $levels){
-      $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_FALSE);
+      $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
       $this->getServer()->getPluginManager()->addPermission($permission);
     }
   }
@@ -80,7 +80,7 @@ class BlockCMD extends PluginBase implements Listener{
               return true;
           }
           
-          $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_FALSE);
+          $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
           $this->getServer()->getPluginManager()->addPermission($permission);
           
           if(isset($args[2])){
@@ -173,7 +173,7 @@ class BlockCMD extends PluginBase implements Listener{
           return;
         }
       }
-      $player->sendMessage(TextFormat::RED . "You cannot use this command" . (empty($levels) ? "." : " here."));
+      $player->sendMessage(TextFormat::RED . "§2This command is blocked. Sorry." . (empty($levels) ? "." : " here."));
       $event->setCancelled(true);
     }
   }
