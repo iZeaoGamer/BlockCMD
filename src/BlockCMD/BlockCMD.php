@@ -40,7 +40,7 @@ class BlockCMD extends PluginBase implements Listener{
     }
     $this->commands = new Config($this->getDataFolder()."commands.yml", Config::YAML);
     foreach($this->commands->getAll() as $command => $levels){
-      $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_FALSE);
+      $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
       $this->getServer()->getPluginManager()->addPermission($permission);
     }
   }
