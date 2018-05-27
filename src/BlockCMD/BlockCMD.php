@@ -1,5 +1,4 @@
 <?php
-
 /*
  * BlockCMD - A PocketMine-MP plugin to block certain commands from being used by players
  * Copyright (C) 2017 Kevin Andrews <https://github.com/kenygamer/BlockCMD>
@@ -14,11 +13,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
 */
-
 declare(strict_types=1);
-
 namespace BlockCMD;
-
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
@@ -27,7 +23,6 @@ use pocketmine\permission\Permission;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
-
 class BlockCMD extends PluginBase implements Listener{
   
   /** @var Config */
@@ -40,6 +35,8 @@ class BlockCMD extends PluginBase implements Listener{
     }
     $this->commands = new Config($this->getDataFolder()."commands.yml", Config::YAML);
     foreach($this->commands->getAll() as $command => $levels){
+      $permission = new Permission("", "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
+      $this->getServer()->getPluginManager()->addPermission($permission);
     }
   }
   
@@ -77,6 +74,10 @@ class BlockCMD extends PluginBase implements Listener{
               $sender->sendMessage(TextFormat::RED . "Command is already blocked.");
               return true;
           }
+          
+          $permission = new Permission("", "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
+          $this->getServer()->getPluginManager()->addPermission($permission);
+          
           if(isset($args[2])){
             $levels = [];
             foreach($args as $arg){
@@ -133,7 +134,7 @@ class BlockCMD extends PluginBase implements Listener{
             $this->commands->remove($command);
             $this->commands->save();
             
-            $this->getServer()->getPluginManager()->removePermission("blockcmd.access" . $command);
+            $this->getServer()->getPluginManager()->removePermission("");
             
             $sender->sendMessage("Command " . TextFormat::GREEN . "/" . $command . TextFormat::WHITE . " has been unblocked.");
             return true;
@@ -159,7 +160,7 @@ class BlockCMD extends PluginBase implements Listener{
     if($this->commands->exists($command)){
       $levels = $this->commands->get($command);
       
-      if($player->isOp() . $command){
+      if($player->isOp()){
         return;
       }
       if(!empty($levels)){
