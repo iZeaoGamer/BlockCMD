@@ -40,8 +40,6 @@ class BlockCMD extends PluginBase implements Listener{
     }
     $this->commands = new Config($this->getDataFolder()."commands.yml", Config::YAML);
     foreach($this->commands->getAll() as $command => $levels){
-      $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
-      $this->getServer()->getPluginManager()->addPermission($permission);
     }
   }
   
@@ -79,10 +77,6 @@ class BlockCMD extends PluginBase implements Listener{
               $sender->sendMessage(TextFormat::RED . "Command is already blocked.");
               return true;
           }
-          
-          $permission = new Permission("blockcmd.access." . $command, "Allows access to the " . $command . " command.", Permission::DEFAULT_FALSE);
-          $this->getServer()->getPluginManager()->addPermission($permission);
-          
           if(isset($args[2])){
             $levels = [];
             foreach($args as $arg){
