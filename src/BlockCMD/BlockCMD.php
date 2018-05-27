@@ -60,7 +60,7 @@ class BlockCMD extends PluginBase implements Listener{
     
     switch($action){
       case "add":
-        if($sender->hasPermission("blockcmd") || $sender->hasPermission("blockcmd.command") || $sender->hasPermission("blockcmd.command.blockcmd") || $sender->hasPermission("blockcmd.command.blockcmd.add")){
+        if($sender->isOp()){
           if(!isset($args[1])){
             $sender->sendMessage("Usage: /blockcmd add <command> [levels]");
             $sender->sendMessage("Command: The command to block.");
@@ -106,7 +106,7 @@ class BlockCMD extends PluginBase implements Listener{
         return true;
         break;
       case "list":
-        if($sender->hasPermission("blockcmd") || $sender->hasPermission("blockcmd.command") || $sender->hasPermission("blockcmd.command.blockcmd") || $sender->hasPermission("blockcmd.command.blockcmd.list")){
+        if($sender->isOp()){
           if(empty($this->commands->getAll())){
             $sender->sendMessage(TextFormat::RED . "No blocked commands found.");
             return true;
@@ -121,7 +121,7 @@ class BlockCMD extends PluginBase implements Listener{
         return true;
         break;
       case "remove":
-        if($sender->hasPermission("blockcmd") || $sender->hasPermission("blockcmd.command") || $sender->hasPermission("blockcmd.command.blockcmd") || $sender->hasPermission("blockcmd.command.blockcmd.remove")){ 
+        if($sender->isOp()){ 
           if(!isset($args[1])){
             $sender->sendMessage("Usage: /blockcmd remove <command>");
             $sender->sendMessage("Command: The command to unblock.");
@@ -165,7 +165,7 @@ class BlockCMD extends PluginBase implements Listener{
     if($this->commands->exists($command)){
       $levels = $this->commands->get($command);
       
-      if($player->hasPermission("blockcmd.access") || $player->hasPermission("blockcmd.access." . $command)){
+      if($player->isOp() . $command){
         return;
       }
       if(!empty($levels)){
