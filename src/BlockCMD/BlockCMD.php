@@ -35,7 +35,7 @@ class BlockCMD extends PluginBase implements Listener{
     }
     $this->commands = new Config($this->getDataFolder()."commands.yml", Config::YAML);
     foreach($this->commands->getAll() as $command => $levels){
-      $permission = new Permission("", "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
+      $permission = new Permission("blockcmd.opcommands", "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
       $this->getServer()->getPluginManager()->addPermission($permission);
     }
   }
@@ -75,7 +75,7 @@ class BlockCMD extends PluginBase implements Listener{
               return true;
           }
           
-          $permission = new Permission("", "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
+          $permission = new Permission("blockcmd.opcommands2", "Allows access to the " . $command . " command.", Permission::DEFAULT_OP);
           $this->getServer()->getPluginManager()->addPermission($permission);
           
           if(isset($args[2])){
@@ -134,7 +134,7 @@ class BlockCMD extends PluginBase implements Listener{
             $this->commands->remove($command);
             $this->commands->save();
             
-            $this->getServer()->getPluginManager()->removePermission("");
+            $this->getServer()->getPluginManager()->removePermission("blockcmd.access");
             
             $sender->sendMessage("Command " . TextFormat::GREEN . "/" . $command . TextFormat::WHITE . " has been unblocked.");
             return true;
