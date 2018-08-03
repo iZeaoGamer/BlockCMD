@@ -155,22 +155,20 @@ class BlockCMD extends PluginBase implements Listener{
    * @param PlayerCommandPreprocessEvent $event
    */
   public function onPlayerCommandPreProcess(PlayerCommandPreprocessEvent $event) : void{
+   $name = $event->getPlayer()->getDisplayName();
     $player = $event->getPlayer();
-    $command = str_replace("/", "", explode(" ", strtolower($event->getMessage()))[0]);
-    if($this->commands->exists($command)){
-      $levels = $this->commands->get($command);
-      
+$command = $event->getMessage();
+$comds = $this->getConfig()->get("commands");
+$com = explode(" ", $command);
       if($player->isOp()){
         return;
       }
-      if(!empty($levels)){
-        if(in_array($player->getLevel()->getName(), $levels)){
-          return;
-        }
-      }
+      foreach($comds as $cmd){
+if($com[0] == "/" . $cmd or $com[0] == "./" . $cmd){
+$event->setCancelled(true);
       $player->sendMessage(TextFormat::RED . "§2This command is blocked. Sorry." . (empty($levels) ? "." : " here."));
-      $event->setCancelled(true);
     }
   }
   
+}
 }
