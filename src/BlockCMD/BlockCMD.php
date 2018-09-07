@@ -62,21 +62,21 @@ class BlockCMD extends PluginBase implements Listener{
       case "add":
         if($sender->hasPermission("blockcmd") || $sender->hasPermission("blockcmd.command") || $sender->hasPermission("blockcmd.command.blockcmd") || $sender->hasPermission("blockcmd.command.blockcmd.add")){
           if(!isset($args[1])){
-            $sender->sendMessage("Usage: /blockcmd add <command> [levels]");
-            $sender->sendMessage("Command: The command to block.");
-            $sender->sendMessage("Levels: Optional. Worlds where command is allowed (e.g world flat) ");
+            $sender->sendMessage("§aPlease use: §b/blockcmd add <command> [levels]");
+            $sender->sendMessage("§2Command: §3The command to block.");
+            $sender->sendMessage("§2Levels: §3Optional. Worlds where command is allowed (e.g world flat) ");
             return true;
           }
           
           $command = strtolower($args[1]);
           
           if(strpos($command, "/") !== false){
-            $sender->sendMessage(TextFormat::RED . "Command must not contain the slash.");
+            $sender->sendMessage(TextFormat::RED . "§2Command must not contain the slash.");
             return true;
           }
           
           if($this->commands->exists($command)){
-              $sender->sendMessage(TextFormat::RED . "Command is already blocked.");
+              $sender->sendMessage(TextFormat::RED . "§2Command is already blocked.");
               return true;
           }
           
@@ -93,13 +93,13 @@ class BlockCMD extends PluginBase implements Listener{
             }
             $this->commands->set($command, $levels);
             $this->commands->save();
-            $sender->sendMessage("Command " . TextFormat::GREEN . "/" . $command . TextFormat::WHITE . " has been blocked. Allowed levels: " . TextFormat::GREEN . implode(TextFormat::WHITE . ", " . TextFormat::GREEN, $levels));
+            $sender->sendMessage("§dCommand " . TextFormat::GREEN . "&5/" . $command . TextFormat::WHITE . " §dhas been blocked. Allowed levels:§5 " . TextFormat::GREEN . implode(TextFormat::WHITE . ", " . TextFormat::GREEN, $levels));
             return true;
           }
           
           $this->commands->set($command, []);
           $this->commands->save();
-          $sender->sendMessage("Command " . TextFormat::GREEN . "/" . $command . TextFormat::WHITE . " has been blocked.");
+          $sender->sendMessage("§dCommand " . TextFormat::GREEN . "§5/" . $command . TextFormat::WHITE . " §dhas been blocked.");
           return true;
         }
         $sender->sendMessage(TextFormat::RED . "You do not have permission to use this subcommand.");
@@ -108,13 +108,13 @@ class BlockCMD extends PluginBase implements Listener{
       case "list":
         if($sender->hasPermission("blockcmd") || $sender->hasPermission("blockcmd.command") || $sender->hasPermission("blockcmd.command.blockcmd") || $sender->hasPermission("blockcmd.command.blockcmd.list")){
           if(empty($this->commands->getAll())){
-            $sender->sendMessage(TextFormat::RED . "No blocked commands found.");
+            $sender->sendMessage(TextFormat::RED . "§2No blocked commands found.");
             return true;
           }
           foreach($this->commands->getAll() as $command => $levels){
             $cmds[] = $command;
           }
-          $sender->sendMessage("Blocked commands: " . TextFormat::GREEN . (implode(TextFormat::WHITE . ", " . TextFormat::GREEN, $cmds)));
+          $sender->sendMessage("§6Blocked commands: " . TextFormat::YELLOW . (implode(TextFormat::WHITE . "§e, " . TextFormat::YELLOW, $cmds)));
           return true;
         }
         $sender->sendMessage(TextFormat::RED . "You do not have permission to use this subcommand.");
@@ -173,7 +173,7 @@ class BlockCMD extends PluginBase implements Listener{
           return;
         }
       }
-      $player->sendMessage(TextFormat::RED . "You cannot use this command" . (empty($levels) ? "." : " here."));
+      $player->sendMessage(TextFormat::RED . "This command is for staff only.");
       $event->setCancelled(true);
     }
   }
